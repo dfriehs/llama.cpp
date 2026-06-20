@@ -4139,6 +4139,12 @@ void common_params_add_preset_options(std::vector<common_arg> & args) {
         [](common_params &, int) { /* unused */ }
     ).set_env(COMMON_ARG_PRESET_STOP_TIMEOUT).set_preset_only());
 
+    args.push_back(common_arg(
+        {"cuda-visible-devices"}, "<dev1,dev2,..>",
+        "in server router mode, make following CUDA devices to visible to the child process",
+        [](common_params &, int) { /* unused */ }
+    ).set_env(COMMON_ARG_PRESET_CUDA_VISIBLE_DEVICES).set_preset_only());
+
     // args.push_back(common_arg(
     //     {"pin"},
     //     "in server router mode, do not unload this model if models_max is exceeded",

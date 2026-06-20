@@ -867,6 +867,13 @@ void server_models::load(const std::string & name) {
         std::vector<std::string> child_env  = base_env; // copy
         child_env.push_back("LLAMA_SERVER_ROUTER_PORT=" + std::to_string(base_params.port));
 
+        if (std::string val; inst.meta.preset.get_option(COMMON_ARG_PRESET_CUDA_VISIBLE_DEVICES, val)) {
+            const auto it = std::remove_if(child_env.begin(), child_env.end(),
+                [](const std::string & s) { return s.rfind("CUDA_VISIBLE_DEVICES=", 0) == 0; });
+            child_env.erase(it, child_env.end());
+            child_env.push_back("CUDA_VISIBLE_DEVICES=" + val);
+        }
+
         SRV_INF("%s", "spawning server instance with args:\n");
         for (const auto & arg : child_args) {
             SRV_INF("  %s\n", arg.c_str());
